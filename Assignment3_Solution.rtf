@@ -1,0 +1,273 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf200
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww25400\viewh13700\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Name:: Aishwariya Talathi\
+Assignment 3\
+\
+\
+\
+Exercise 1\
+\
+ while(sum<=6000)\
+        \{\
+            //calculating arrival time for messages\
+            double time=-Math.log(1.0 - Math.random()) / arrival_rate;\
+            //converting hours to mins\
+            double time_mins=time*60;\
+            //sum : To check time <= 6000 mins\
+            sum+=time_mins;        \
+            String c1="E";\
+            String c2=c1.concat(Integer.toString(cnt++));\
+           //Inserting message arrival entries into queue\
+            PriQ pri=new PriQ(c2,time_mins,"MA");\
+            tot_msg++;\
+            pq.add(pri);\
+            //if the current weather=1(Good),it will trigger cuurent_weather=0(bad)\
+            if(current_weather==1)\
+            \{\
+                current_weather=0;\
+                //Insert weather change(to bad weather) entry into queue\
+                PriQ pri2=new PriQ("Bad Weather",nd2.sample(),"WC");\
+                pq.add(pri2);\
+                \
+            \}\
+            //if the current weather=0(Bad),it will trigger cuurent_weather=1(Good)\
+            if(current_weather==0)\
+            \{\
+                current_weather=1;\
+                //Insert weather change(to Good weather) entry into queue\
+                PriQ pri3=new PriQ("Good Weather",nd1.sample(),"WC");\
+                pq.add(pri3);\
+            \}\
+        \}\
+        //Execute while loop if the queue is not empty and if the system is in an hour less that 100\
+        while(!pq.isEmpty() && current_time<=6000)\
+            \{\
+                //Remove entry with highest priority\
+                PriQ pri4=pq.remove();\
+                //get its current time\
+                current_time=current_time+pri4.getTime();\
+                //If weather is good set flag to 1 else set it to 0\
+                if("Good Weather".equals(pri4.getToken()))\
+                \{\
+                    flag=1;\
+                \}\
+                \
+                else\
+                \{\
+                    flag=0;\
+                \}\
+                //If the entry is of message arrival type implement the following if loop\
+                if( "MA".equals(pri4.getType()))\
+                \{\
+                    //if channel1 is free implement the following if loop\
+                    if(channel1<=current_time)\
+                    \{\
+                        //if the weather is good\
+                        if(flag==1)\
+                        \{\
+                           //random : processing time during good weather\
+                           double random = Math.random()*60; \
+                           PriQ pri5=new PriQ(pri4.getToken(),current_time+random,"MP");\
+                           //Add the Message processed entry into the queue\
+                           pq.add(pri5);\
+                           //update channel1 time\
+                           channel1=current_time+random;\
+                        \}\
+                        //If the weather is bad\
+                        else\
+                        \{   \
+                            //random : Processing time during bad weather\
+                            double random = Math.cbrt(Math.random()*60);\
+                            PriQ pri5=new PriQ(pri4.getToken(),current_time+random,"MP");\
+                            //Add the Message processed entry into the queue\
+                            pq.add(pri5);\
+                            //update channel1 time\
+                            channel1=current_time+random;\
+                        \}\
+                    \
+                    \}\
+                    \
+                    //if channel2 is free implement the following if loop\
+                    else if(channel2<=current_time)\
+                    \{\
+                        //if the weather is good\
+                        if(flag==1)\
+                        \{\
+                            //random : processing time during good weather\
+                           double random = Math.random()*60; \
+                           PriQ pri5=new PriQ(pri4.getToken(),current_time+random,"MP");\
+                           //Add the Message processed entry into the queue\
+                           pq.add(pri5);\
+                           //update channel2 time\
+                           channel2=current_time+random;\
+                        \}\
+                        //If the weather is bad\
+                        else\
+                        \{   \
+                            //random : processing time during good weather\
+                            double random = Math.cbrt(Math.random()*60);\
+                            PriQ pri5=new PriQ(pri4.getToken(),current_time+random,"MP");\
+                            //Add the Message processed entry into the queue\
+                            pq.add(pri5);\
+                            //update channel2 time\
+                            channel2=current_time+random;\
+                        \}\
+                    \
+                    \}\
+                    \
+                    //if channel3 is free implement the following if loop\
+                    else if(channel3<=current_time)\
+                    \{\
+                        //if the weather is good\
+                        if(flag==1)\
+                        \{\
+                            //random : processing time during good weather\
+                           double random = Math.random()*60; \
+                           PriQ pri5=new PriQ(pri4.getToken(),current_time+random,"MP");\
+                           //Add the Message processed entry into the queue\
+                           pq.add(pri5);\
+                           //update channel3 time\
+                           channel3=current_time+random;\
+                        \}\
+                        //If the weather is bad\
+                        else\
+                        \{   \
+                            //random : processing time during good weather\
+                            double random = Math.cbrt(Math.random()*60);\
+                            PriQ pri5=new PriQ(pri4.getToken(),current_time+random,"MP");\
+                            //Add the Message processed entry into the queue\
+                            pq.add(pri5);\
+                            //update channel3 time\
+                            channel3=current_time+random;\
+                        \}\
+                    \
+                    \}\
+                    else\
+                        //Keeps count for the number of lost messages\
+                        msg_lost++;\
+                    \
+                \}  \
+            \}\
+\
+\
+\
+Output: Sample Snapshot\
+\
+PriQ\{token=E60, timestamp=0.772459292554898, type=MA\}\
+PriQ\{token=E148, timestamp=1.116545374703625, type=MA\}\
+PriQ\{token=E17, timestamp=1.4472042660162736, type=MA\}\
+PriQ\{token=E58, timestamp=1.6441502472562006, type=MA\}\
+PriQ\{token=E135, timestamp=1.9103160477786325, type=MA\}\
+PriQ\{token=E98, timestamp=2.0995680095431393, type=MA\}\
+PriQ\{token=E63, timestamp=2.411238589380007, type=MA\}\
+PriQ\{token=E184, timestamp=3.054463849771828, type=MA\}\
+PriQ\{token=E154, timestamp=3.251129131837999, type=MA\}\
+PriQ\{token=E118, timestamp=3.3685343689836813, type=MA\}\
+PriQ\{token=E86, timestamp=3.5662491604820703, type=MA\}\
+PriQ\{token=E32, timestamp=3.962699375663432, type=MA\}\
+PriQ\{token=E92, timestamp=4.333012335190154, type=MA\}\
+PriQ\{token=E36, timestamp=4.535178904609812, type=MA\}\
+PriQ\{token=E83, timestamp=5.186021768049419, type=MP\}\
+PriQ\{token=E178, timestamp=5.290995160565502, type=MA\}\
+PriQ\{token=E40, timestamp=5.4556810823838, type=MA\}\
+PriQ\{token=E102, timestamp=6.574313916657145, type=MA\}\
+PriQ\{token=E109, timestamp=7.1957895818652355, type=MA\}\
+PriQ\{token=E129, timestamp=7.366170677762484, type=MA\}\
+PriQ\{token=E99, timestamp=8.163175541703437, type=MP\}\
+PriQ\{token=E147, timestamp=8.334299869165939, type=MA\}\
+PriQ\{token=E145, timestamp=8.9123208999309, type=MA\}\
+PriQ\{token=E15, timestamp=9.439694128471135, type=MA\}\
+PriQ\{token=E158, timestamp=10.215334944429964, type=MA\}\
+PriQ\{token=E107, timestamp=10.582351145648781, type=MP\}\
+PriQ\{token=E166, timestamp=10.822957447172477, type=MA\}\
+PriQ\{token=E26, timestamp=11.332590799415009, type=MA\}\
+PriQ\{token=E33, timestamp=11.43791479887204, type=MA\}\
+PriQ\{token=E24, timestamp=12.27563298003, type=MA\}\
+PriQ\{token=E64, timestamp=12.774787714274755, type=MA\}\
+PriQ\{token=E35, timestamp=12.99134154475053, type=MA\}\
+PriQ\{token=E29, timestamp=13.496088571908293, type=MA\}\
+PriQ\{token=E185, timestamp=13.628873850870415, type=MA\}\
+PriQ\{token=E161, timestamp=14.154030264880333, type=MA\}\
+PriQ\{token=E124, timestamp=14.595737839238998, type=MA\}\
+PriQ\{token=E94, timestamp=14.625339342977322, type=MA\}\
+\
+\
+Question 2)\
+\
+        double sigmasquare=0,lambda=0,stderr,qdelta,sumsq=0, lostsum=0,delta;\
+        double left_bound,right_bound;\
+        double prob1=0; //probability of message being lost\
+        double av;\
+        int i,j;\
+        delta=(float)(1+0.90)/2;\
+        int iterations=10000;\
+        Wolf obj1=new Wolf();\
+        \
+        for(i=1;i<=iterations;i++)\
+        \{\
+        lostsum=obj1.system(null,0)+lostsum;\
+        prob1=obj1.system(null, 1)+prob1;\
+        sumsq=sumsq+(prob1*prob1);\
+        \}\
+        lambda=(prob1)/iterations;\
+        av=(float) lostsum/iterations;\
+        sigmasquare=(sumsq-(lambda*lambda*iterations))/(iterations-1);\
+        stderr=Math.sqrt(sigmasquare/iterations);\
+        qdelta=StatFunctions.qnorm(delta,false);\
+        right_bound=lambda+(qdelta*stderr);\
+        left_bound=lambda-(qdelta*stderr);\
+        System.out.println("Probability of message lost =\'93+lambda);\
+        System.out.println("Confidence Interval is "+left_bound+ " - "+right_bound);\
+        System.out.println("Average number of messages lost are "+av);\
+\
+\
+\
+Sample Output:\
+Probability of message lost=0.0201281942342363221 \
+Confidence Interval is -1.849123421789431920 -1.873124345432324767\
+Average number of messages lost are 4.01027845276424\
+\
+\
+Question 3) \
+\
+ArrayList<Float> a1 = new ArrayList<Float>();\
+        ArrayList<Float> a2 = new ArrayList<Float>();\
+        for(int i=1;i<=1000;i++)\
+        \{\
+            a1.add(obj1.ESTA(0)); // #Messages_Lost\
+            a2.add(obj1.ESTA(1)); // #Messages_Sent\
+        \}\
+        \
+        double expectancy_y = a1.mean();  //Lost message\'92s expectancy\
+        variance_Sent=Variance(a1); //lost message\'92s variance\
+        variance_Failure=Variance(a2); //sent message\'92s variance\
+        arr=zip(a1,a2);\
+        covariance1=Covariance(arr); //covariance\
+        value_c=Covar[0][1]/(float)(Variance(a2))*1000; //C-value\
+        \
+        \
+        ArrayList<Float> b1 = new ArrayList<Float>();\
+        ArrayList<Float> b2 = new ArrayList<Float>();\
+        ArrayList<Float> b3 = new ArrayList<Float>();\
+        \
+        for(int j=0;j<10000)\
+        \{\
+            float var2=obj1.ESTA(null,0);\
+            float var1=obj1.ESTA(null,1);\
+            float total= var1/var2;\
+            b1.add(var1); //Messages lost\
+            b2.add(total); //Messages sent\
+            b3.add(b1.pop(j)+(float)(value_c*b2.pop(j)-expectancy_y));\
+            \
+        \}\
+        variance_z=Variance(b3); //Variance Reduction\
+        System.out.println((float)variance_z-variance_Failure)/variance_z)*100;\
+\
+\
+\
+}
